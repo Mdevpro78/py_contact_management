@@ -1,2 +1,3 @@
 from models import Base
-from models import Contact_model
+from models import Contact_schema
+from models import models
