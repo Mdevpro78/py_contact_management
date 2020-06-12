@@ -1,6 +1,6 @@
 from abc import ABC
 
-from models.Contact_schema import Contact
+from models.ContactSchema import Contact
 from models.Base import Base, Session, engine
 
 
@@ -9,7 +9,6 @@ class AbstactModel(ABC):
     def __init__(self):
         Base.metadata.create_all(engine)
         self.session = Session()
-
     
 class ContactModel(AbstactModel):
 
@@ -33,4 +32,3 @@ class ContactModel(AbstactModel):
     @property
     def read_all_contact(self):
         return self.session.query(Contact).all()
-
