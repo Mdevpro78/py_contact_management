@@ -1,12 +1,14 @@
-from tkinter import (Tk, Label, Entry,
-                     Radiobutton, Button,
-                     Frame)
+from tkinter import (Label, Entry, Tk,
+                     Button, Frame)
 
-from tkinter import StringVar
+from tkinter import StringVar, IntVar
+
+from tkinter.ttk import Combobox
 
 
 class ContactInformation:
     def __init__(self):
+        self.id = IntVar()
         self.name = StringVar()
         self.last_name = StringVar()
         self.gender = StringVar()
@@ -14,17 +16,25 @@ class ContactInformation:
 
     @staticmethod
     def get_attributes():
-        return 'Name', 'Last Name', 'Gender', 'Phone Number'
+        return 'Name', 'Last Name', 'Phone Number', 'Gender'
 
+    @property
     def informaion(self):
-        return {'name':self.name.get(), 'last_name': self.last_name.get(),
-                'gender': self.gender.get(), 'phone_number': self.phone_number.get()}
+        return {'first_name':self.name.get(), 'last_name': self.last_name.get(),
+                'phone_number': self.phone_number.get(), 'gender': self.gender.get(), 'id':self.id.get()}
+
+    def set_values(self, **kwargs):
+        self.name.set(kwargs['Firstname'])
+        self.last_name.set(kwargs['Lastname'])
+        self.phone_number.set(kwargs['Phone'])
+        self.gender.set(kwargs['Gender'])
+        self.id.set(int(kwargs['id']))
 
 
-class FormView:
-
-    def __init__(self, title):
-        self.window = Tk()
+class FormView(Frame):
+    def __init__(self, title, window):
+        super().__init__(window)
+        self.window = window
         self.window.configure(background='#96C3CE')
         self.contact = ContactInformation()
         self.window.title(f'{title}')
@@ -34,37 +44,54 @@ class FormView:
         self.window_title.place(x=90, y=53)
         self.create_labels()
         self.create_entries()
-        self.create_radiobuttons()
+        self.create_combobox()
         self.create_buttons()
-        self.window.mainloop()
 
     def create_entries(self):
-        Entry(self.window, textvariable = self.contact.name).place(x = 240, y = 130)
-        Entry(self.window, textvariable = self.contact.last_name).place(x = 240, y = 180)
-        Entry(self.window, textvariable = self.contact.phone_number).place(x = 240, y = 230)
+        self.name_entry = Entry(self.window, textvariable = self.contact.name,
+                                text=self.contact.name)
+        self.name_entry.place(x = 240, y = 130)
+
+        self.last_name_entry = Entry(self.window, textvariable = self.contact.last_name,
+                                     text=self.contact.last_name)
+        self.last_name_entry.place(x = 240, y = 180)
+
+        self.phone_nubmer_entry = Entry(self.window, textvariable = self.contact.phone_number,
+                                        text=self.contact.phone_number)
+        self.phone_nubmer_entry.place(x = 240, y = 230)
 
     def create_labels(self):
         frame = Frame(self.window, width=100, height=140, bg='#96C3CE')
         for index, item in enumerate(self.contact.get_attributes()):
-            lbl = Label(frame, text=f"{item}: ", width=14, font=("bold", 10), bg='#96C3CE', anchor='w')
+            lbl = Label(frame, text=f"{item}: ", width=14, font=("bold", 11), bg='#96C3CE', anchor='w')
             lbl.grid(row=index, column=0, pady=13.5)
         frame.place(x=120, y=115)
 
-    def create_radiobuttons(self):
-        Radiobutton(self.window, text = "Male", padx = 5, variable = self.contact.gender,
-                    value = "Male", bg='#96C3CE').place(x = 235, y = 280)
-        Radiobutton(self.window, text = "Female",padx = 5, variable = self.contact.gender,
-                    value = "Female", bg='#96C3CE').place(x = 300, y = 280)
+    def create_combobox(self):
+        self.contact_gender = ['Female', 'Male']
+        self.gender_options = Combobox(self.window, values=self.contact_gender)
+        self.gender_options.config(width=17)
+        self.gender_options.current(0)
+        self.gender_options.place(x = 238, y = 280)
 
     def create_buttons(self):
-        submit_btn = Button(self.window, text = 'Submit', width = 20, bg = '#58A4B0',
-                            fg = '#020100', font = ('bold', 11))
-        submit_btn.place(x = 255, y = 350)
-        submit_btn.config(command=self.contact.informaion)
+        self.submit_btn = Button(self.window, text = 'Submit',
+                                 width = 20, bg = '#58A4B0',
+                                 fg = '#020100', font = ('bold', 11))
+        self.submit_btn.place(x = 255, y = 350)
 
-        Button(self.window, text = 'Cancell', width = 20, bg = '#D64933', command=self.window.destroy,
-               fg = '#020100', font = ('bold', 11)).place(x = 55, y = 350)
+        Button(self.window, text='Cancell', width=20,
+               bg='#D64933', command=self.window.destroy,
+               fg='#020100', font=('bold', 11)).place(x=55, y=350)
+
+    def insert_item(self, **kwargs):
+        self.contact.set_values(**kwargs)
+        self.name_entry.insert(0, f'{self.contact.name.get()}')
+        self.last_name_entry.insert(0, f"{self.contact.last_name.get()}")
+        self.phone_nubmer_entry.insert(0, f"{self.contact.phone_number.get()}")
+        self.gender_options.current(self.contact_gender.index(kwargs['Gender']))
 
 
-
-# contact = FormView('ContactInformation')
+# app = Tk()
+# obj = FormView('test', app)
+# app.mainloop()
