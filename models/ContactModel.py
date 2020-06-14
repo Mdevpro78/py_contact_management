@@ -1,16 +1,19 @@
 from abc import ABC
 
 from models.ContactSchema import Contact
-from models.Base import Base, Session, engine
+from models.Base import Base, Session, Engine
 
 
 class AbstactModel(ABC):
 
     def __init__(self):
-        Base.metadata.create_all(engine)
+        Base.metadata.create_all(Engine)
         self.session = Session()
     
 class ContactModel(AbstactModel):
+
+    def __init__(self):
+        super(ContactModel, self).__init__()
 
     def insert_contact(self, **kwargs):
         self.session.add(Contact(**kwargs))

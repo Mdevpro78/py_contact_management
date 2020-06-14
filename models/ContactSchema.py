@@ -18,7 +18,9 @@ class Contact(Base):
         self.phone_number = phone_number
         self.gender = gender
 
-    @property
-    def full_name(self):
-        return ' '.join([self.first_name, self.last_name])[1:]
+
+    def info(self):
+        return {'Firstname': self.first_name ,'Lastname': self.last_name,
+                'Phone': self.phone_number, 'Gender': self.gender, 'id': self.id}
+
 
