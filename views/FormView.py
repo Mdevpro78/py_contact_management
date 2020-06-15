@@ -6,7 +6,7 @@ from tkinter import StringVar, IntVar
 from tkinter.ttk import Combobox
 
 
-class ContactInformation:
+class ContactView:
     def __init__(self):
         self.id = IntVar()
         self.name = StringVar()
@@ -32,11 +32,12 @@ class ContactInformation:
 
 
 class FormView(Frame):
-    def __init__(self, title, window):
+    def __init__(self, window, title):
         super().__init__(window)
         self.window = window
+        self.window.resizable(width=False, height=False)
         self.window.configure(background='#96C3CE')
-        self.contact = ContactInformation()
+        self.contact = ContactView()
         self.window.title(f'{title}')
         self.window.geometry('500x500')
         self.window_title = Label(self.window, text='Contact Form',
@@ -52,18 +53,21 @@ class FormView(Frame):
                                 text=self.contact.name)
         self.name_entry.place(x = 240, y = 130)
 
-        self.last_name_entry = Entry(self.window, textvariable = self.contact.last_name,
+        self.last_name_entry = Entry(self.window,
+                                     textvariable = self.contact.last_name,
                                      text=self.contact.last_name)
         self.last_name_entry.place(x = 240, y = 180)
 
-        self.phone_nubmer_entry = Entry(self.window, textvariable = self.contact.phone_number,
+        self.phone_nubmer_entry = Entry(self.window,
+                                        textvariable = self.contact.phone_number,
                                         text=self.contact.phone_number)
         self.phone_nubmer_entry.place(x = 240, y = 230)
 
     def create_labels(self):
         frame = Frame(self.window, width=100, height=140, bg='#96C3CE')
         for index, item in enumerate(self.contact.get_attributes()):
-            lbl = Label(frame, text=f"{item}: ", width=14, font=("bold", 11), bg='#96C3CE', anchor='w')
+            lbl = Label(frame, text=f"{item}: ", width=14,
+                        font=("bold", 11), bg='#96C3CE', anchor='w')
             lbl.grid(row=index, column=0, pady=13.5)
         frame.place(x=120, y=115)
 

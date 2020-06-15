@@ -7,10 +7,9 @@ from tkinter.ttk import Treeview
 
 
 class TableView(Frame):
-    def __init__(self, window):
-        super().__init__(window)
+    def __init__(self, window, **kwargs):
+        super().__init__(window, **kwargs)
         self.tree = Treeview(self, selectmode='browse')
-
         self.tree.column("#0", width=100, minwidth=75, stretch=NO)
         self.tree.heading("#0", text='row', anchor='center')
         self.scroll = Scrollbar(self, command=self.tree.yview)
