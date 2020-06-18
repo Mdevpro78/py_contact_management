@@ -7,6 +7,8 @@ from tkinter.ttk import Treeview
 
 
 class TableView(Frame):
+    OPTIONS = {'font': ('bold', 11)}
+
     def __init__(self, window, **kwargs):
         super().__init__(window, **kwargs)
         self.tree = Treeview(self, selectmode='browse')
@@ -27,5 +29,11 @@ class TableView(Frame):
             self.tree.heading(f"#{index+1}", text=f"{column}", anchor='center')
 
     def fill_row(self, *args):
-        for index, contact in enumerate(args):
-            self.tree.insert("", 'end', f"{contact.id}", text=f"{index}", values=list(contact.info().values()))
+        if args:
+            self.tree.delete(*self.tree.get_children())
+            for contact in args:
+                self.tree.insert("", 'end', contact.id,
+                                 text=f"{contact.id}",
+                                 values=list(contact.informations.values()))
+        else:
+            return
