@@ -4,13 +4,13 @@ from models.ContactSchema import Contact
 from models.Base import Base, Session, Engine
 
 
-class AbstactModel(ABC):
+class AbstractModel(ABC):
 
     def __init__(self):
         Base.metadata.create_all(Engine)
         self.session = Session()
     
-class ContactModel(AbstactModel):
+class ContactModel(AbstractModel):
 
     def __init__(self):
         super(ContactModel, self).__init__()

@@ -18,9 +18,9 @@ class Contact(Base):
         self.phone_number = phone_number
         self.gender = gender
 
-
-    def info(self):
+    @property
+    def informations(self):
         return {'Firstname': self.first_name ,'Lastname': self.last_name,
-                'Phone': self.phone_number, 'Gender': self.gender, 'id': self.id}
+                'Phone': self.phone_number, 'Gender': self.gender}
 
 
