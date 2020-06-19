@@ -9,7 +9,8 @@ class AbstractModel(ABC):
     def __init__(self):
         Base.metadata.create_all(Engine)
         self.session = Session()
-    
+
+
 class ContactModel(AbstractModel):
 
     def __init__(self):

@@ -19,17 +19,11 @@ class ContactView:
     def get_attributes():
         return 'Name', 'Last Name', 'Phone Number', 'Gender'
 
-    # @property
-    # def information(self):
-    #     return {'first_name': self.name.get(), 'last_name': self.last_name.get(),
-    #             'phone_number': self.phone_number.get(), 'gender': self.gender.get(), 'id': self.id.get()}
-
     def set_values(self, **kwargs):
         self.name.set(kwargs['Firstname'])
         self.last_name.set(kwargs['Lastname'])
         self.phone_number.set(kwargs['Phone'])
         self.gender.set(kwargs['Gender'])
-        self.id.set(int(kwargs['id']))
 
 
 class FormView(Toplevel):
@@ -94,14 +88,6 @@ class FormView(Toplevel):
         Button(self, text = 'Cancell', width = 20,
                bg = '#D64933', command = self.destroy,
                fg = '#020100', **self.OPTIONS).place(x = 55, y = 350)
-
-
-    def insert_item(self, **kwargs):
-        self.contact.set_values(**kwargs)
-        self.name_entry.insert(0, f'{self.contact.name.get()}')
-        self.last_name_entry.insert(0, f"{self.contact.last_name.get()}")
-        self.phone_nubmer_entry.insert(0, f"{self.contact.phone_number.get()}")
-        self.gender.current(self.contact_gender.index(kwargs['Gender']))
 
 
     @property

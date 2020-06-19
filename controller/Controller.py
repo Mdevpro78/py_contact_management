@@ -25,7 +25,7 @@ class Controller(Tk):
 
         self.gui.delete_button.config(command=self.delete_command)
         self.gui.insert_button.config(command=self.new_item_command)
-
+        self.gui.update_button.config(command=self.update_command)
 
         self.update_gui_table()
 
@@ -36,27 +36,23 @@ class Controller(Tk):
         else:
             return
 
-
     def set_selected_item(self, event):
-        self.selected = event.widget.selection()
-
+        self.selected = event.widget.selection()[0]
 
     def delete_command(self):
         if self.selected:
             if self.message.commit('Delete', 'Are you sure you want to delete the selected item?').conjugate():
-                self.model.delete_contact(self.selected[0])
-                self.gui.table.tree.delete(self.selected[0])
+                self.model.delete_contact(self.selected)
+                self.gui.table.tree.delete(self.selected)
                 self.selected = None
                 self.update_gui_table()
         else:
             self.message.warning('warrning', 'Please select an item from list')
 
-
     def new_item_command(self):
         self.insert_form = FormView(self, 'Enter New Contact')
         self.insert_form.grab_set()
         self.insert_form.submit_btn.config(command=self.new_item_submit_btn_command)
-
 
     def new_item_submit_btn_command(self):
         if all(self.insert_form.get_entries_values.values()):
@@ -70,6 +66,26 @@ class Controller(Tk):
         else:
             self.message.warning('Input incorecct', 'Please fill all of the entries')
 
-if __name__ == '__main__':
-    app = Controller()
-    app.mainloop()
+    def update_command(self):
+        if self.selected:
+            self.update_form = FormView(self, 'Update Contact')
+            self.update_form.grab_set()
+            self.update_form.contact.set_values(**self.model.read_contact(self.selected).informations)
+            self.update_form.gender.current(self.update_form.contact_gender.index(
+                self.model.read_contact(self.selected).informations['Gender']))
+            self.update_form.submit_btn.config(command=self.edite_update_btn_command, text='Update')
+        else:
+            self.message.warning('warrning', 'Please select an item from list')
+
+    def edite_update_btn_command(self):
+        if all(self.update_form.get_entries_values.values()):
+            if self.message.commit('Save', 'Are you save this?').conjugate():
+                self.model.update_contact(self.selected, **self.update_form.get_entries_values)
+                self.update_gui_table()
+                self.selected = None
+                self.message.info('update', 'Update Your selected item with success')
+                self.update_form.destroy()
+            else:
+                self.update_form.destroy()
+        else:
+            self.message.warning('Input incorecct', 'Please fill all of the entries')

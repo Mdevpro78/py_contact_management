@@ -31,9 +31,9 @@ class TableView(Frame):
     def fill_row(self, *args):
         if args:
             self.tree.delete(*self.tree.get_children())
-            for contact in args:
+            for index, contact in enumerate(args):
                 self.tree.insert("", 'end', contact.id,
-                                 text=f"{contact.id}",
+                                 text=f"{index+1}",
                                  values=list(contact.informations.values()))
         else:
             return
