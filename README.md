@@ -1,5 +1,5 @@
 # py_contact_management
-GUI Contact management in python using Tkinter and SqlAlchemy
+GUI Contact management system in python using Tkinter and SqlAlchemy
 
 You can run this app with below commands
 
